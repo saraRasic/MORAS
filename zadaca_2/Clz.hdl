@@ -1,0 +1,16 @@
+CHIP Clz {
+    IN in[16];
+    OUT out[16];
+
+    PARTS:
+	Not(in=in[15], out=not15);
+	Add16(a=false, b[0]=not15, b[1..15]=false, out=out15);
+	
+	Not(in=in[14], out=not14);
+	And(a=not14, b=not15, out=isZero14);
+	Add16(a=out15, b[0]=isZero14, b[1..15]=false, out=out14);
+
+	Not(in=in[13], out=not13);
+	And(a=not13, b=isZero14, out=isZero13);
+	Add16(a=out14, b[0]=isZero13, b[1..15]=false, out=out);
+}
