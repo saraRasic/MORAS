@@ -2,9 +2,6 @@ import re
 
 class Macro:
     def __init__(self):
-        self._flag = False
-        self._line = ""
-        self._errm = ""
         self._while_label_counter = 0
         self.lines = []
         
