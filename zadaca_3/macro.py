@@ -12,9 +12,9 @@ class Macro:
         self._iter_lines(self._parse_macro)
     
     def _get_next_line(self):
-        if not self._lines:
+        if not self.lines:
             return None
-        return self._lines.pop(0)
+        return self.lines.pop(0)
     
     def _parse_macro(self, line, p, o):
         if line[0]!="$":
