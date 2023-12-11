@@ -4,7 +4,7 @@ def _parse_symbols(self):
     
     # Prvo parsiramo deklaracije oznaka. Npr. "(LOOP)".
     self._iter_lines(self._parse_labels)
-    
+
     # Na kraju parsiramo varijable i reference na oznake te ih pretvaramo u
     # konstante. Npr. "@SCREEN" pretvaramo u "@16384" ili "@END" kojemu je
     # oznaka "(END)" bila u trecoj liniji pretvaramo u "@3".
@@ -16,21 +16,25 @@ def _parse_symbols(self):
 # izbrisana iz nje. Koristimo dictionary _labels.
 def _parse_labels(self, line, p, o):
     if line[0] == "(":
-        label_1 = line[1:].split(")")
-        if len(label_1) > 1 and label_1[1] != ''):
+        return line
+    else:
+        label=line[1:]
+        if label[-1]==")":
+            label = line[1:].split(")")[0]
+
+            if len(label) == 0:
+                self._flag = False
+                self._line = o
+                self._errm = "Invalid label"
+            else:
+                self._labels[label] = str(p)
+        else:
             self._flag = False
             self._line = o
             self._errm = "Invalid label"
-        label = line[1:].split(")")[0]
-        if len(label) == 0:
-            self._flag = False
-            self._line = o 
-            self._errm = "Invalid label"
-        else:
-            self._labels[label] = str(p)
-        return ""
-    else:
-        return line
+            
+    return ""
+
 
 # Svaki poziv na varijablu ili oznaku je oblika "@NAZIV", gdje naziv nije broj.
 # Prvo provjeriti oznake ("_labels"), a potom varijable ("_vars"). Varijablama
@@ -53,6 +57,8 @@ def _parse_variables(self, line, p, o):
         self._num_vars += 1
         
     return "@" + self._variables[l]
+    
+    
 
 # Inicijalizacija predefiniranih oznaka.
 def _init_symbols(self):
