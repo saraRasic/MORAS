@@ -16,21 +16,6 @@ def _parse_macro(self, line, p, o):
             lines.append("D=M")
             lines.append("@" + B)
             lines.append("M=D")
-        elif line[1]=='S'and line[2]=="W"and line[3]=='P':
-            A = re.split("[(,)]", line)[1]
-            B = re.split("[(,)]", line)[2]
-            lines.append("@" + A)
-            lines.append("D=M")
-            lines.append("@SwapValue")
-            lines.append("M=D")
-            lines.append("@" + B)
-            lines.append("D=M")
-            lines.append("@" + A)
-            lines.append("M=D")
-            lines.append("@SwapValue")
-            lines.append("D=M")
-            lines.append("@" + B)
-            lines.append("M=D")
         elif line[1]=='S' and line[2]=='U' and line[3]=='M':
             A = re.split("[(,)]", line)[1]
             B = re.split("[(,)]", line)[2]
@@ -44,5 +29,5 @@ def _parse_macro(self, line, p, o):
         else:
             self._flag = False
             self._line = o
-            self._errm = "Invalid Macro!" 
+            self._errm = "Invalid" 
     return lines   
