@@ -6,8 +6,6 @@ class Macro:
         self._line = ""
         self._errm = ""
         self.counter = 0
-        self.label = ""
-        self.end_label = ""
         self.lines = []
         
     def _parse_macros(self):
