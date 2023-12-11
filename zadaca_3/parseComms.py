@@ -13,7 +13,7 @@ def _parse_commands(self):
 # Dekodiranje vrsimo koristeci se rjecnicima inicijaliziranima u funkciji
 # "_init_comms". Konacni oblik instrukcije je
 #   "1 1 1 a c1 c2 c3 c4 c5 c6 d1 d2 d3 j1 j2 j3".
-def _parse_command(self, line, b, c):
+def _parse_command(self, line, p, o):
     if line[0] == "@":
         num = int(line[1:])
         return "{0:016b}".format(num)
