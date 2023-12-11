@@ -6,11 +6,13 @@
 #    linija ili adrese u memoriji).
 # 3. Parsirati naredbe (A i C-instrukcije).
 
+import re
 class Parser:
     from parseLines import _parse_lines, _parse_line
-    from parseComms import _parse_commands, _parse_command, _init_comms
-    from parseSymbs import _parse_symbols, _parse_labels, _parse_variables, _init_symbols
-    
+    from parseSymbs import _init_symbols, _parse_symbols, _parse_labels, _parse_variables
+    from parseComms import _init_comms, _parse_command, _parse_commands
+    #dodano
+    from parseMacro import _parse_macro, _parse_macros
     def __init__(self, filename):
         # Otvaramo input asemblersku datoteku.
         try:
@@ -33,17 +35,21 @@ class Parser:
         self._flag = True # Ukoliko je flag postavljen na False, parsiranje je neuspjesno.
         self._line = -1   # lokacija (broj linije) na kojoj se pogreska nalazi.
         self._errm = ""   # Poruka koja opisuje pogresku.
+        
+        # oznake
+        self._labels = {}
+        self._variables = {}
 
         # Parsiramo linije izvornog koda.
         self._parse_lines()
         if self._flag == False:
             Parser._error("PL", self._line, self._errm)
             return
-        
-        # oznake
-        self._labels = {}
-        self._variables = {}
-        
+        #dodano
+        self._parse_macros()
+        if self._flag == False:
+            Parser._error("MAC", self._line, self._errm)
+            return 
         self._parse_symbols()
         if self._flag == False:
             Parser._error("SYM", self._line, self._errm)
@@ -115,6 +121,10 @@ class Parser:
             print("[" + src + "] " + msg)
         else:
             print(msg)  
+
+
+if __name__ == "__main__":
+    Parser("Pong") 
 
 
 if __name__ == "__main__":
