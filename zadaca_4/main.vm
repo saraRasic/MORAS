@@ -1,0 +1,28 @@
+sp
+call main.Main 0
+ep
+
+function Main 0
+	push constant 1
+    push constant 2
+    push constant 3
+    call max.max 3
+
+    push constant 10
+    call pell.pell 1
+
+    push constant 5
+    push constant 2
+    call divmod.div 2
+
+    push constant 5
+    push constant 2 
+    call divmod.mod 2
+
+	push constant 100
+	push constant 5 
+	push constant 3
+	call Bss.search 3
+
+	label END
+	goto END

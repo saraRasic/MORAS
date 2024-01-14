@@ -1,0 +1,30 @@
+function Max 3
+	push argument 0
+	push argument 1 
+	gt
+	push argument 0 
+	push argument 2
+	gt
+	and
+	if-goto first
+	push argument 1 
+	push argument 0
+	gt
+	push argument 1 
+	push argument 2
+	gt
+	and
+	if-goto second
+	goto third
+
+label first
+	push argument 0
+	return
+
+label second
+	push argument 1
+	return
+
+label third
+	push argument 2
+	return

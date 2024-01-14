@@ -1,0 +1,23 @@
+function Pell 0
+    push argument 0
+    push constant 1
+    lt
+    if-goto base
+        push argument 0
+        push constant 1
+        sub
+        call Pell 1
+        push argument 0
+        push constant 2
+        sub
+        call Pell 1
+        push temp 0 
+        push temp 0 
+        add
+        push temp 1 
+        add
+        return
+
+label base
+    push argument 0
+    return
