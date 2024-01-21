@@ -1,0 +1,78 @@
+class Graph
+{
+    field int x0; // x koordinata ishodišta
+
+    constructor Graph new(int x)
+    {
+        let x0 = x;
+        do axis();
+        do draw();
+        return this;
+    }
+
+    method void axis()       // 512 x 256
+    {
+        if (((x0 - 128) > 0) & ((x0 + 128) < 512))
+        {
+            do Screen.setColor(true);
+            do Screen.drawLine(x0 - 128, 128, x0 + 128, 128);
+            do Screen.drawLine(x0, 1, x0, 255);
+        }
+        return;
+    }
+
+    method void draw()
+    {
+        var int i, j;
+        var Array X, Y;
+        let X = Array.new(65);
+        let Y = Array.new(65);
+        let j = -32;
+        while (i < 65)
+        {
+            let X[i] = j;
+            let Y[i] = Graph.foo(X[i]);
+            let i = i + 1;
+            let j = j + 1;
+        }
+        let i = 0;
+        while (i < 64)
+        {
+            if ((128 - Y[i] > 0) & (128 - Y[i + 1] > 0) & (128 - Y[i] < 256) & (128 - Y[i + 1] < 256))
+            {
+                do Screen.drawLine(x0 + X[i], 128 - Y[i], x0 + X[i + 1], 128 - Y[i + 1]);
+            }
+            if ((128 - Y[i] > 0) & (128 - Y[i + 1] < 0) & (128 - Y[i] < 256) & (128 - Y[i + 1] < 256))
+            {
+                do Screen.drawLine(x0 + X[i], 128 - Y[i], x0 + X[i + 1], 1);
+            }
+            if ((128 - Y[i] > 0) & (128 - Y[i + 1] > 0) & (128 - Y[i] < 256) & (128 - Y[i + 1] > 256))
+            {
+                do Screen.drawLine(x0 + X[i], 128 - Y[i], x0 + X[i + 1], 255);
+            }
+            if ((128 - Y[i] < 0) & (128 - Y[i + 1] > 0) & (128 - Y[i] < 256) & (128 - Y[i + 1] < 256))
+            {
+                do Screen.drawLine(x0 + X[i], 1, x0 + X[i + 1], 128 - Y[i + 1]);
+            }
+            if ((128 - Y[i] > 0) & (128 - Y[i + 1] > 0) & (128 - Y[i] > 256) & (128 - Y[i + 1] < 256))
+            {
+                do Screen.drawLine(x0 + X[i], 255, x0 + X[i + 1], 128 - Y[i + 1]);
+            }
+            let i = i + 1;
+        }
+        do X.dispose();
+        do Y.dispose();
+        return;
+    }
+
+    function int foo(int x)
+    {
+        return (x*x) + (8 * x) - 15;
+    }
+
+    method void Dispose()
+    {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

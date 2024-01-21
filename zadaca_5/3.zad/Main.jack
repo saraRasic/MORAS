@@ -1,0 +1,10 @@
+class Main
+{
+    function void main()
+    {
+        var Graph g;
+        let g = Graph.new(260);
+        do g.Dispose();
+        return;
+    }
+}
