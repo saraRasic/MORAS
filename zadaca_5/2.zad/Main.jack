@@ -1,0 +1,72 @@
+class Main
+{
+    function void main()
+    {
+        var Vec a, b;
+        var int i;
+
+        let a = Vec.new(2);
+        let b = Vec.new(3);
+
+
+        while (i < a.len())
+        {
+            do a.set(i, i + 1);
+            let i = i + 1;
+        }
+        let i = 0;
+        while (i < b.len())
+        {
+            do b.set(i, i + 1);
+            let i = i + 1;
+        }
+
+        do Output.printInt(a.get(3));
+        do Output.println();
+        do Output.printInt(a.get(0));
+        do Output.println();
+        do Output.printInt(b.get(-7));
+        do Output.println();
+        do Output.printInt(b.get(5));
+        do Output.println();
+
+        do Output.printInt(a.len());
+        do Output.println();
+        do Output.printInt(b.len());
+        do Output.println();
+
+        if (Vec.is_eq(a, b) = false)
+        {
+            do Output.printString("Vektori nisu jednaki");
+            do Output.println();
+        }
+
+        do b.resize(2);
+
+        if (Vec.is_eq(a, b) = true)
+        {
+            do Output.printString("Vektori su jednaki");
+            do Output.println();
+        }
+
+        do a.set(1, 4);
+        do a.set(3, 8);
+        do a.set(2, 5);
+        do a.set(0, 14);
+
+        do b.set(2, 4);
+        do b.set(1, 8);
+        do b.set(0, 5);
+        do b.set(3, 14);
+
+        if (Vec.elems(a, b) = true)
+        {
+            do Output.printString("Vektori imaju jednake elemente");
+            do Output.println();
+        }
+
+        do a.dispose();
+        do b.dispose();
+        return;
+    }
+}

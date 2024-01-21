@@ -1,0 +1,150 @@
+class Vec
+{
+    field int capacity;
+    field Array A;
+
+    constructor Vec new(int n)
+    {
+        let capacity = Vec.pow(2, n); // pow implimentiran tako da za n < 0 vraca 1
+        let A = Array.new(capacity);
+        return this;
+    }
+
+    method void dispose()
+    {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method Array get_arr()
+    {
+        return A;
+    }
+
+    method int len()
+    {
+        return capacity;
+    }
+
+    method void set(int k, int v)
+    {
+        if ((k < 0) | (k > (capacity - 1)))
+        {
+            do Output.printString("Error: index out of bounds");
+            do Output.println();
+            return;
+        }
+        let A[k] = v;
+        return;
+    }
+
+    method int get(int k)
+    {
+        if ((k < 0) | (k > (capacity - 1)))
+        {
+            do Output.printString("Error: index out of bounds");
+            do Output.println();
+            return -1;
+        }
+        return A[k];
+    }
+
+    method void resize(int m)
+    {
+        var int prev, i;
+        var Array temp;
+        let prev = capacity;
+        let capacity = Vec.pow(2, m);
+        let temp = Array.new(capacity);
+        
+        if (prev < capacity)
+        {
+            while (i < prev)
+            {
+                let temp[i] = A[i];
+                let i = i + 1;
+            }
+        }else{
+            while (i < capacity)
+            {
+                let temp[i] = A[i];
+                let i = i + 1;
+            }
+        }
+
+        do A.dispose();
+        let A = temp;
+        do temp.dispose();
+        return;
+    }
+
+    function bool is_eq(Vec A, Vec B)
+    {
+        var int i;
+
+        if (~(A.len() = B.len()))
+        {
+            return false;
+        }
+        while (i < A.len())
+        {
+            if (~(A.get(i) = B.get(i)))
+            {
+                return false;
+            }
+            let i = i + 1;
+        }
+        return true;
+    }
+
+    function bool elems(Vec A, Vec B)
+    {
+        var Array a, b;
+        var int i;
+
+        if (A.len() = B.len())
+        {
+            let a = A.get_arr();
+            let b = A.get_arr();
+
+            do QuickSort.quickSort(a, 0, A.len() - 1);
+            do QuickSort.quickSort(b, 0, B.len() - 1);
+
+            while(i < A.len())
+            {
+                if (~(a[i] = b[i]))
+                {
+                    return false;
+                }
+
+                let i = i + 1;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    function int pow(int a, int n)
+    {
+        var int i, res;
+        let i = 1;
+        if ((n = 0) | (n < 0))
+        {
+            return 1;
+        }
+        if (n = 1)
+        {
+            return a;
+        }
+        let res = a;
+        while (i < n)
+        {
+            let res = res * a;
+            let i = i + 1;
+        }
+        return res;
+    }
+
+}
