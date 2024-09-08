@@ -1,0 +1,97 @@
+class Level{ 
+	field int currentIndex;
+	field Array levelArr;
+	field Game game;
+	
+	constructor Level new(Game varGame){  
+		let game = varGame;
+		let currentIndex = 0;
+		do predefinedLevels();
+		return this;
+	}                                         
+	
+	method void predefinedLevels(){
+		var int i, allIndex, blocks, half;
+		let levelArr = Array.new((55 + 4)); 
+		let allIndex = 0;
+		
+		//level 1
+		let i = 0;
+		let blocks = 10;
+		let half = Math.divide(blocks, 2);
+		let levelArr[allIndex] = 10;
+		let allIndex = allIndex + 1;
+		while(i < 10){
+			let levelArr[allIndex] = Brick.new(100 + (60*Modulo.mod(i,half)), 75+((Math.divide(i,half)+1)*15), game);
+			let i = i+1;
+			let allIndex = allIndex+1;
+		}
+		
+		//level 2
+		let i = 0;
+		let levelArr[allIndex] = 10;
+		let allIndex = allIndex + 1;
+		while(i < 10){
+			let levelArr[allIndex] = Brick.new(120 + (60*Modulo.mod(i,half)), 20+((Math.divide(i,half)+1)*(15+50)), game);
+			let i = i+1;
+			let allIndex = allIndex+1;
+		}
+		
+		// Level 3 - Piramidalni oblik blokova
+		let i = 0;
+		let blocks = 6;
+		let half = Math.divide(blocks, 2);
+		let levelArr[allIndex] = blocks;
+		let allIndex = allIndex + 1;
+		while(i < blocks){
+			let levelArr[allIndex] = Brick.new(160 + (40*i), 50 + (i*15), game);
+			let i = i+1;
+			let allIndex = allIndex+1;
+		}
+		
+		//level 4
+		let blocks = 25;
+		let half = Math.divide(blocks, 5);
+		let i = 0;
+		let levelArr[allIndex] = 25;
+		let allIndex = allIndex + 1;
+		while(i < 25){
+			let levelArr[allIndex] = Brick.new(10+(110 * (Math.divide(i,half))), 20+(((15+10)*Modulo.mod(i,half))), game);
+			let i = i+1;
+			let allIndex = allIndex+1;
+		}
+		
+		return;
+	}
+	
+	method Array newLevel(){  
+		var int i, blocks;
+		var Array tmpLvl;
+		var Brick tmpBlock;
+		
+		let blocks = levelArr[currentIndex];
+		let currentIndex = currentIndex + 1;
+		let tmpLvl = Array.new(blocks + 1);
+		let tmpLvl[0] = blocks;
+		let i = 1;   
+		while((i-1) < blocks){
+			let tmpBlock = levelArr[currentIndex];
+			do tmpBlock.visibility();
+			let tmpLvl[i] = tmpBlock;
+			let i = i + 1;
+			let currentIndex = currentIndex + 1;
+		}
+		return tmpLvl;
+	}
+	
+	method Array firstLevel(){
+		let currentIndex = 0;
+		return newLevel();
+	}
+	
+	method void dispose(){
+		do levelArr.dispose();
+		return;
+	}
+	
+}

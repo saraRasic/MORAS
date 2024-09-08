@@ -1,0 +1,46 @@
+class Main {
+	function void main(){
+		var int input;   
+		var boolean showText;
+		var String showedText;
+		var Game game;
+		
+		let showText = false;
+		
+		do Output.moveCursor(4, 27);
+		do Output.printString("Breakout");
+		do Output.moveCursor(10, 8);
+		do Output.printString("Press [1] for EASY mode or [2] for HARD mode");
+		do Output.moveCursor(18, 26);
+		do Output.printString("Sara Rasic");
+		
+		let input = Keyboard.keyPressed();
+		
+		while(input = 0){
+			do Output.moveCursor(10, 8);
+			
+			let showedText = "Press [1] for EASY mode or [2] for HARD mode";
+			
+			do Output.printString(showedText);
+			do showedText.dispose();
+			let showText = ~showText;
+			
+			let input = Keyboard.keyPressed();
+		}
+		do Sys.wait(200);
+		
+		//biranje tezine
+		if(input = 49){
+		 let game = Game.new(1);
+		}
+		if(input = 50){
+		 let game = Game.new(2);
+		}
+		
+		while(~game.doExit()){
+		 do game.run();
+		}
+		
+		return;
+	}
+}

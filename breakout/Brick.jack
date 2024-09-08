@@ -1,0 +1,88 @@
+class Brick{
+	field int x, y, length, height;
+	field boolean visible;
+	field Game game;
+	
+	constructor Brick new (int varX, int varY, Game varGame){
+		let x = varX;
+		let y = varY;
+		let game = varGame;
+		let length = 50;
+		let height = 15;   
+		let visible = true;
+		return this;
+	}
+	
+	
+	method int getWidth(){
+		return length;
+	}
+	
+	method int getHeight(){
+		return height;
+	}
+	
+	method int getX(){
+		return x;
+	}
+	
+	method int getY(){
+		return y;
+	}
+	
+
+	method void drawBrick(){
+		if(~visible){
+			return;  
+		}
+		
+		//pravokutnik u pravokutniku
+		do Screen.drawRectangle(x, y, x + length, y + height);
+		do Screen.setColor(false);
+		do Screen.drawRectangle(x+2, y+2, (x-2) + length, (y-2) + height);
+		do Screen.setColor(true);
+		return;
+	}
+	
+	//sudar lopte i bricka
+	method void crashCheck(Ball ball){
+		var int ballX, ballY, ballRadius;
+	
+		if(~visible){
+			return;
+		}
+	
+		let ballX = ball.getX();
+		let ballY = ball.getY();
+		let ballRadius = ball.getRadius();
+
+		if((((ballY+ballRadius) - 1) > y) & (~(((ballY-ballRadius)-1) > (y+height)))){
+			//kolizija lijevo i desno
+			if(((ballX+ballRadius) = x) | ((ballX-ballRadius) = (x+length))){
+				do ball.sideCrash();
+				do game.increaseScore();
+				let visible = false;
+			}else{
+			//kolizija gore i dolje
+				if(((ballX+ballRadius) > x) & ((ballX-ballRadius) < ((x+length) + 1))){
+					do ball.straightCrash();
+					do game.increaseScore();
+					let visible = false;
+				}
+			}
+		}
+		return;
+	}
+	
+	//vidljivost bricka
+	method void visibility(){
+		let visible = true;
+		return;
+	}
+	
+	method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+	
+}

@@ -1,0 +1,78 @@
+class Paddle{  
+	field int x, y, length, height, difficulty, paddleSpeed;
+	
+	constructor Paddle new (int varX, int varY, int dif){
+		let length = Math.divide(100, dif);  
+		let height = 10;
+		let difficulty = dif;
+		let paddleSpeed = dif + 2;
+
+		let x = (varX-length);
+		let y = (varY-height); 
+		
+		return this;
+	}
+	
+	method int getX(){
+		return x;
+	}
+	
+	method int getY(){
+		return y;
+	}
+	
+	method int getLength(){
+		return length;
+	}
+	
+
+	method void drawPaddle(){
+		do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + length, y + height);
+		return;
+	}
+	
+
+	method void moveRight(){
+		if(((x + length) + paddleSpeed) > 511){
+			return;
+		}
+		let x = x + paddleSpeed;
+		return;
+	}
+	
+
+	method void moveLeft(){
+		if((x - paddleSpeed) < 1){
+			return;
+		}
+		let x = x - paddleSpeed;
+		return;
+	}
+	
+	//sudar lopte i paddle
+	method void paddleCrashCheck(Ball ball){
+		var int ballX, ballY, ballRadius, paddleL, division;  
+		
+		let ballX = ball.getX();
+		let ballY = ball.getY();
+		let ballRadius = ball.getRadius();
+		
+		let paddleL = length;
+		let division = (paddleL / 2); 
+		
+		if(((ballY+ballRadius)+1) > y){
+			if(((ballX-ballRadius)+1) > x){
+				if(ballX < (x+(1*division))){
+					do ball.crashWithPaddle(1);
+					return;
+				}
+				if(ballX < (x+length)){
+					do ball.crashWithPaddle(2);
+					return;
+				}
+			}
+		}
+		return;
+	}
+}

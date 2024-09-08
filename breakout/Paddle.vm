@@ -1,0 +1,176 @@
+function Paddle.new 0
+push constant 6
+call Memory.alloc 1
+pop pointer 0
+push constant 100
+push argument 2
+call Math.divide 2
+pop this 2
+push constant 10
+pop this 3
+push argument 2
+pop this 4
+push argument 2
+push constant 2
+add
+pop this 5
+push argument 0
+push this 2
+sub
+pop this 0
+push argument 1
+push this 3
+sub
+pop this 1
+push pointer 0
+return
+function Paddle.getX 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Paddle.getY 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function Paddle.getLength 0
+push argument 0
+pop pointer 0
+push this 2
+return
+function Paddle.drawPaddle 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 2
+add
+push this 1
+push this 3
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Paddle.moveRight 0
+push argument 0
+pop pointer 0
+push this 0
+push this 2
+add
+push this 5
+add
+push constant 511
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push this 0
+push this 5
+add
+pop this 0
+push constant 0
+return
+function Paddle.moveLeft 0
+push argument 0
+pop pointer 0
+push this 0
+push this 5
+sub
+push constant 1
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push this 0
+push this 5
+sub
+pop this 0
+push constant 0
+return
+function Paddle.paddleCrashCheck 5
+push argument 0
+pop pointer 0
+push argument 1
+call Ball.getX 1
+pop local 0
+push argument 1
+call Ball.getY 1
+pop local 1
+push argument 1
+call Ball.getRadius 1
+pop local 2
+push this 2
+pop local 3
+push local 3
+push constant 2
+call Math.divide 2
+pop local 4
+push local 1
+push local 2
+add
+push constant 1
+add
+push this 1
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+push local 2
+sub
+push constant 1
+add
+push this 0
+gt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 0
+push this 0
+push constant 1
+push local 4
+call Math.multiply 2
+add
+lt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push argument 1
+push constant 1
+call Ball.crashWithPaddle 2
+pop temp 0
+push constant 0
+return
+label IF_FALSE2
+push local 0
+push this 0
+push this 2
+add
+lt
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push argument 1
+push constant 2
+call Ball.crashWithPaddle 2
+pop temp 0
+push constant 0
+return
+label IF_FALSE3
+label IF_FALSE1
+label IF_FALSE0
+push constant 0
+return

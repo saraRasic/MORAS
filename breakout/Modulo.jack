@@ -1,0 +1,10 @@
+class Modulo{
+	function int mod(int a, int b){
+		var int c, m;
+		let c = Math.divide(a,b);
+		let m = a - (c * b);
+		return m;
+	}
+
+
+}

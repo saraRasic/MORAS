@@ -1,0 +1,201 @@
+function Brick.new 0
+push constant 6
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push argument 2
+pop this 5
+push constant 50
+pop this 2
+push constant 15
+pop this 3
+push constant 0
+not
+pop this 4
+push pointer 0
+return
+function Brick.getWidth 0
+push argument 0
+pop pointer 0
+push this 2
+return
+function Brick.getHeight 0
+push argument 0
+pop pointer 0
+push this 3
+return
+function Brick.getX 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Brick.getY 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function Brick.drawBrick 0
+push argument 0
+pop pointer 0
+push this 4
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push this 0
+push this 1
+push this 0
+push this 2
+add
+push this 1
+push this 3
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 2
+add
+push this 1
+push constant 2
+add
+push this 0
+push constant 2
+sub
+push this 2
+add
+push this 1
+push constant 2
+sub
+push this 3
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push constant 0
+return
+function Brick.crashCheck 3
+push argument 0
+pop pointer 0
+push this 4
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push argument 1
+call Ball.getX 1
+pop local 0
+push argument 1
+call Ball.getY 1
+pop local 1
+push argument 1
+call Ball.getRadius 1
+pop local 2
+push local 1
+push local 2
+add
+push constant 1
+sub
+push this 1
+gt
+push local 1
+push local 2
+sub
+push constant 1
+sub
+push this 1
+push this 3
+add
+gt
+not
+and
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 0
+push local 2
+add
+push this 0
+eq
+push local 0
+push local 2
+sub
+push this 0
+push this 2
+add
+eq
+or
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push argument 1
+call Ball.sideCrash 1
+pop temp 0
+push this 5
+call Game.increaseScore 1
+pop temp 0
+push constant 0
+pop this 4
+goto IF_END2
+label IF_FALSE2
+push local 0
+push local 2
+add
+push this 0
+gt
+push local 0
+push local 2
+sub
+push this 0
+push this 2
+add
+push constant 1
+add
+lt
+and
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push argument 1
+call Ball.straightCrash 1
+pop temp 0
+push this 5
+call Game.increaseScore 1
+pop temp 0
+push constant 0
+pop this 4
+label IF_FALSE3
+label IF_END2
+label IF_FALSE1
+push constant 0
+return
+function Brick.visibility 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+pop this 4
+push constant 0
+return
+function Brick.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return

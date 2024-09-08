@@ -1,0 +1,114 @@
+class Ball{
+	field int x, y, r, difficulty;
+	field boolean down, left, right;
+	
+	constructor Ball new (int varX, int varY, int diff){ 
+		let x = varX;
+		let y = varY;
+		let r = 5;    
+		let difficulty = diff;
+		let right = true;
+		let down = false;
+
+		return this;
+	}
+	
+	method int getX(){
+		return x;
+	}
+	
+	method int getY(){
+		return y;
+	}
+	
+	method int getRadius(){
+		return r;
+	}
+	
+	
+	method void drawBall(){
+		do Screen.drawCircle(x,y,r);
+		return;
+	}
+	
+	//kretnja lopte
+	method void Movement(){
+		
+		//ceiling
+		if((y - (r - difficulty)) < 2){
+			let down = true;
+		}
+		
+		//left side
+		if((x - (r - difficulty)) < 2){
+			let left = false;
+			let right = true;
+		}
+				
+		//right side
+		if((x + (r + difficulty)) > 509){
+			let right = false;
+			let left = true;
+		}
+		
+		
+		if(down){
+			let y = y + difficulty;
+		}else{
+			let y = y - difficulty;
+		}
+
+		if(left){
+			let x = x - difficulty;
+		}else{
+			let x = x + difficulty;
+		}
+		return;
+	}
+	
+	
+	method void moveBall(){
+		do Movement();
+		return;
+	}
+	
+	method boolean gameOver(){
+		if((y+(r*2)) > 256){
+			return true;
+		}
+		return false;
+	}
+	
+	//sudar lopte i paddle
+	method void crashWithPaddle(int segment){
+		let down = false;
+		
+		if((right & (segment = 2) | left & (segment = 1)) ){
+			return;
+		}
+		
+		if(segment = 1){
+			let left = true;
+			let right = false;
+		}
+		if(segment = 2){
+			let left = false;
+			let right = true;
+		}
+		return;
+	}
+	
+	//sudar sa strane
+	method void sideCrash(){
+		let left = ~left;
+		let right = ~right;
+		return;
+	}
+	
+	//sudar gore/dole
+	method void straightCrash(){
+		let down = ~down;
+		return;
+	}
+
+}

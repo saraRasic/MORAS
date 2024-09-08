@@ -1,0 +1,212 @@
+class Game{   
+	field int points, blocks, remainingBlocks, speed, difficulty;
+	field boolean exit;
+	
+	field Paddle paddle;
+	field Ball ball;                
+	field Array currentLevel;
+	field String pointsS, difficultyS;
+	field Level level;
+	
+	constructor Game new (int dif) {
+		let speed = 8;
+		let pointsS = "Points: ";
+		let difficultyS = "Difficulty: ";
+		let difficulty = dif;
+		let level = Level.new(this);
+		do initGame(difficulty);
+		return this;
+	}
+
+	method void initGame(int dif){
+		let paddle = Paddle.new(256,255,dif);
+		let ball = Ball.new(200,200,dif);
+
+		let exit = false;
+		let points = 0;
+		do initBlocks();
+		return;
+	}
+	
+	method void initBlocks(){
+		var Array levelData;
+		let levelData = level.firstLevel();
+		do loadLevel(levelData);
+		return;
+	}
+	
+	//ucitava levele
+	method void loadLevel(Array levelData){
+		var int pointsInLevel, i;
+		let pointsInLevel = levelData[0];
+		let blocks = pointsInLevel;
+		let remainingBlocks = pointsInLevel;
+		let currentLevel = Array.new(pointsInLevel);
+		
+		let i = 0;
+		while(i < pointsInLevel){
+			let currentLevel[i] = levelData[(i + 1)];
+			let i = i+1;
+		}
+		do levelData.dispose();
+		return;
+	}
+	
+	
+	method void run(){
+		var int i, steps;
+		var char input;
+		
+		let i = -1;
+		while(~exit){
+		
+			let steps = Math.divide(42, speed);
+			
+			do calculateLogic();
+	
+			if(i = steps){ 
+				do drawObjects();
+				let i = -1;
+			}
+			let i = i + 1;
+		
+			let input = Keyboard.keyPressed();
+			if(input = 140){ //ESC
+				let exit = true;
+				do Sys.wait(300);
+				do gameOver();
+			}
+			if(input = 130){ //<-
+				do paddle.moveLeft();
+			}
+			if(input = 132){ //->
+				do paddle.moveRight();
+			}
+			if(input = 43){ //+
+				do skipLevel();
+				do Sys.wait(500);
+			}
+			
+			do Sys.wait(speed);
+
+		}
+		return;
+	}
+	
+	method void gameOver(){
+		var char input;
+		
+		do Screen.clearScreen();
+		do Output.moveCursor(2,28);
+		do Output.printString("Game over");
+		do Output.moveCursor(10,24);
+		do Output.printString("You got ");
+		if((points > 1) | (points = 0)){
+			do Output.printInt(points);
+			do Output.printString(" points!");
+		} else{
+			do Output.printString("one point!");
+		}
+		
+		do Output.moveCursor(20,15);
+		do Output.printString("Press [ENTER] to continue!");
+		do Output.moveCursor(21,15);
+		do Output.printString("Or press [ESC] to exit the game!");
+		let input = Keyboard.keyPressed();
+		while(~((input = 128) | (input = 140))){
+			let input = Keyboard.keyPressed();
+			//do Sys.wait(10);
+		}
+		if(input = 128){
+			do initGame(difficulty);
+			do run();
+		}else{
+			do Sys.halt();
+		}
+		return;
+	}
+	
+	//crtanje objekata
+	method void drawObjects(){
+		var int i;
+		var Brick tmpBlock;
+		
+		do Screen.clearScreen();
+			
+		do Output.moveCursor(0,0);
+		do Output.printString(pointsS);
+		do Output.printInt(points);
+
+		do Output.moveCursor(1,0);
+		do Output.printString(difficultyS);
+		do Output.printInt(difficulty);
+		
+		do paddle.drawPaddle();
+		
+		do ball.drawBall();
+		
+		let i = 0;
+		while(i < blocks){
+			let tmpBlock = currentLevel[i];
+			do tmpBlock.drawBrick();
+			let i = i+1;
+		}
+		return;
+	}
+	
+	method void calculateLogic(){
+		var int i;
+		var Brick tmpBlock;
+		
+		do paddle.paddleCrashCheck(ball);
+		
+		do ball.moveBall();
+		
+		if(ball.gameOver()){
+			do gameOver();
+		}
+		
+		let i = 0;
+		while(i < blocks){
+			let tmpBlock = currentLevel[i];
+			do tmpBlock.crashCheck(ball);
+			let i = i+1;
+		}
+		return;
+	}
+	
+	method void increaseScore(){	
+		var Array levelData;
+		let points = points + 1;
+		let remainingBlocks = remainingBlocks - 1;
+		
+		if(points = 55){
+			let exit = true;
+			do Sys.wait(300);
+			
+			do Screen.clearScreen();
+			do Output.moveCursor(10,22);
+			do Output.printString("To be continued...");
+		}
+		
+		if(remainingBlocks = 0){		
+			let levelData = level.newLevel();
+			do loadLevel(levelData);
+		}
+		return;
+	}
+	
+		
+	method boolean doExit(){
+		return exit;
+	}
+	
+	//Debugging only
+	method void skipLevel(){
+		var Array levelData;
+		let levelData = level.newLevel();
+		do loadLevel(levelData);
+		return;
+	}
+
+}
